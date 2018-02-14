@@ -183,8 +183,8 @@ export default class Camera extends React.Component<PropsType> {
     this._lastEvents = {};
     this._lastEventsTimes = {};
     this.state = {
-      isAuthorized: false,
-      isAuthorizationChecked: false,
+      isAuthorized: true,
+      isAuthorizationChecked: true,
     };
   }
 
@@ -262,14 +262,13 @@ export default class Camera extends React.Component<PropsType> {
 
   async componentWillMount() {
     const hasVideoAndAudio = this.props.captureAudio;
-    const isAuthorized = await requestPermissions(hasVideoAndAudio, CameraManager, this.props.permissionDialogTitle, this.props.permissionDialogMessage);
-    this.setState({ isAuthorized, isAuthorizationChecked: true });
+    //const isAuthorized = await requestPermissions(hasVideoAndAudio, CameraManager, this.props.permissionDialogTitle, this.props.permissionDialogMessage);
+    //this.setState({ isAuthorized, isAuthorizationChecked: true });
   }
 
   render() {
     const nativeProps = this._convertNativeProps(this.props);
 
-    if (this.state.isAuthorized) {
       return (
         <RNCamera
           {...nativeProps}
@@ -280,11 +279,6 @@ export default class Camera extends React.Component<PropsType> {
           onFacesDetected={this._onObjectDetected(this.props.onFacesDetected)}
         />
       );
-    } else if (!this.state.isAuthorizationChecked) {
-      return this.props.pendingAuthorizationView;
-    } else {
-      return this.props.notAuthorizedView;
-    }
   }
 
   _convertNativeProps(props: PropsType) {
